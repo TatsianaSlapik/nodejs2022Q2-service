@@ -27,7 +27,11 @@ export class TrackService {
   }
 
   deleteTrack = (trackId: string) => {
-    const indexDb = db.tracks.findIndex((user) => user.id === trackId);
+    const indexDb = db.tracks.findIndex((track) => track.id === trackId);
+    const favoriteTrackIndexDb = db.favorites.tracks.findIndex(
+      (track) => track.id === trackId,
+    );
+    db.favorites.tracks.splice(favoriteTrackIndexDb, 1);
     return db.tracks.splice(indexDb, 1);
   };
 

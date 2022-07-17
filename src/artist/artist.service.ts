@@ -38,6 +38,10 @@ export class ArtistService {
         album.artistId = null;
       }
     });
+    const favoriteArtistIndexDb = db.favorites.artists.findIndex(
+      (artist) => artist.id === artistId,
+    );
+    db.favorites.artists.splice(favoriteArtistIndexDb, 1);
     return db.artists.splice(indexDb, 1);
   };
 

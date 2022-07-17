@@ -33,6 +33,10 @@ export class AlbumService {
         track.albumId = null;
       }
     });
+    const favoriteAlbumIndexDb = db.favorites.albums.findIndex(
+      (album) => album.id === albumId,
+    );
+    db.favorites.albums.splice(favoriteAlbumIndexDb, 1);
     return db.albums.splice(albumIndexInDb, 1);
   };
 
