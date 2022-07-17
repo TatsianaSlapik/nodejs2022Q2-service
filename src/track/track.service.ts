@@ -3,6 +3,7 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { v4 as uuid } from 'uuid';
 import { Track } from './track.interface';
 import { UpdateTrackDto } from './dto/update-track.dto';
+import db from 'src/db/database';
 
 @Injectable()
 export class TrackService {
@@ -13,36 +14,36 @@ export class TrackService {
       ...track,
       id: uuid(),
     });
-    this.tracks.push(newTrack);
+    db.tracks.push(newTrack);
     return newTrack;
   }
 
   getAllTracks(): Track[] {
-    return this.tracks;
+    return db.tracks;
   }
 
   getTrackById(trackId: string): Track {
-    return this.tracks.filter((track) => track.id === trackId)[0];
+    return db.tracks.filter((track) => track.id === trackId)[0];
   }
 
   deleteTrack = (trackId: string) => {
-    const indexDb = this.tracks.findIndex((user) => user.id === trackId);
-    return this.tracks.splice(indexDb, 1);
+    const indexDb = db.tracks.findIndex((user) => user.id === trackId);
+    return db.tracks.splice(indexDb, 1);
   };
 
   updateTrack = (trackId: string, data: UpdateTrackDto): Track => {
-    const trackInDb: Track = this.tracks.find((track) => track.id === trackId);
-    const indexDb = this.tracks.findIndex(
+    const trackInDb: Track = db.tracks.find((track) => track.id === trackId);
+    const indexDb = db.tracks.findIndex(
       (trackInDb) => trackInDb.id === trackId,
     );
 
-    this.tracks[indexDb] = new Track({
+    db.tracks[indexDb] = new Track({
       ...trackInDb,
       albumId: data.albumId,
       artistId: data.artistId,
       duration: data.duration,
       name: data.name,
     });
-    return this.tracks[indexDb];
+    return db.tracks[indexDb];
   };
 }

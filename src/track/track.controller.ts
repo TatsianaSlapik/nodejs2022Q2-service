@@ -82,11 +82,7 @@ export class TrackController {
           HttpStatus.NOT_FOUND,
         );
       } else {
-        // if (data.oldPassword !== track.password) {
-        //   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-        // } else {
         return this.trackService.updateTrack(id, data);
-        // }
       }
     } else {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);

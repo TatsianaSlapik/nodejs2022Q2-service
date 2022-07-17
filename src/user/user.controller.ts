@@ -35,7 +35,6 @@ export class UserController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   getUserById(@Param('id') id: string): User {
-    console.log(id);
     if (isValidId(id)) {
       const user = this.userService.getUserById(id);
       if (!user) {
