@@ -1,6 +1,10 @@
 import { Exclude } from 'class-transformer';
 
 export class User {
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
+  }
+
   id: string; // uuid v4
   login: string;
 
@@ -10,8 +14,4 @@ export class User {
 
   @Exclude({ toPlainOnly: true })
   password: string;
-
-  constructor(partial: Partial<User>) {
-    Object.assign(this, partial);
-  }
 }
