@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AlbumController } from './album/album.controller';
 import { AlbumModule } from './album/album.module';
 import { AlbumService } from './album/album.service';
@@ -22,6 +23,7 @@ import { UserService } from './user/user.service';
     ArtistModule,
     AlbumModule,
     FavoritesModule,
+    ConfigModule.forRoot(),
   ],
   controllers: [
     UserController,
