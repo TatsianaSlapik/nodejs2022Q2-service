@@ -1,5 +1,15 @@
-export interface Favorites {
-  artists: string[]; // favorite artists ids
-  albums: string[]; // favorite albums ids
-  tracks: string[]; // favorite tracks ids
+import { Album } from 'src/album/album.interface';
+import { Artist } from 'src/artist/artist.interface';
+import { Track } from 'src/track/track.interface';
+
+export class Favorites {
+  constructor() {
+    this.albums = [];
+    this.artists = [];
+    this.tracks = [];
+  }
+
+  artists: Artist[]; // favorite artists ids
+  albums: Album[]; // favorite albums ids
+  tracks: Track[]; // favorite tracks ids
 }
