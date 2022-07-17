@@ -1,4 +1,8 @@
-export interface Album {
+export class Album {
+  constructor(partial: Partial<Album>) {
+    Object.assign(this, partial);
+  }
+
   id: string; // uuid v4
   name: string;
   year: number;
