@@ -15,6 +15,7 @@ import { TrackService } from './track/track.service';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   imports: [
@@ -24,20 +25,26 @@ import { UserService } from './user/user.service';
     AlbumModule,
     FavoritesModule,
     ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: () => ({
+        type: 'postgres',
+        host: process.env.POSTGRES_HOST,
+        port: Number(process.env.POSTGRES_PORT),
+        username: process.env.POSTGRES_USER,
+        password: process.env.POSTGRES_PASSWORD,
+        database: process.env.POSTGRES_DB,
+        entities: ['dist/**/*.entity{.ts,.js}'],
+        synchronize: true,
+      }),
+    }),
   ],
   controllers: [
-    UserController,
     TrackController,
     ArtistController,
     AlbumController,
     FavoritesController,
   ],
-  providers: [
-    UserService,
-    TrackService,
-    ArtistService,
-    AlbumService,
-    FavoritesService,
-  ],
+  providers: [TrackService, ArtistService, AlbumService, FavoritesService],
 })
 export class AppModule {}
