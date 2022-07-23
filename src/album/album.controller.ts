@@ -13,7 +13,7 @@ import {
 import { isValidId } from 'src/until/until';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { Album } from './album.interface';
+import { Album } from './album.entity';
 import { AlbumService } from './album.service';
 
 @Controller('album')
@@ -22,19 +22,19 @@ export class AlbumController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllAlbums(): Album[] {
+  getAllAlbums() {
     return this.albumService.getAllAlbums();
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public create(@Body() createdAlbum: CreateAlbumDto): Album {
+  public create(@Body() createdAlbum: CreateAlbumDto) {
     return this.albumService.create(createdAlbum);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getAlbumById(@Param('id') id: string): Album {
+  getAlbumById(@Param('id') id: string) {
     if (isValidId(id)) {
       const album = this.albumService.getAlbumById(id);
       if (!album) {
@@ -70,7 +70,7 @@ export class AlbumController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateAlbum(@Param('id') id: string, @Body() data: UpdateAlbumDto): Album {
+  updateAlbum(@Param('id') id: string, @Body() data: UpdateAlbumDto) {
     if (isValidId(id)) {
       if (Object.keys(data).length == 0) {
         throw new HttpException('Invalid request.', HttpStatus.BAD_REQUEST);

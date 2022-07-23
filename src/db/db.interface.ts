@@ -1,7 +1,7 @@
-import { Album } from 'src/album/album.interface';
+import { Album } from 'src/album/album.entity';
 import { Artist } from 'src/artist/artist.interface';
 import { Track } from 'src/track/track.interface';
-import { User } from 'src/user/user.interface';
+import { UserEntity } from 'src/user/user.entity';
 import { Favorites } from 'src/favorites/favorites.interface';
 
 export class Db {
@@ -13,7 +13,7 @@ export class Db {
     this.favorites = new Favorites();
   }
 
-  users: User[];
+  users: UserEntity[];
   artists: Artist[];
   tracks: Track[];
   albums: Album[];

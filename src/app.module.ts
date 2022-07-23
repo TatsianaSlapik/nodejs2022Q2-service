@@ -12,9 +12,7 @@ import { FavoritesService } from './favorites/favorites.service';
 import { TrackController } from './track/track.controller';
 import { TrackModule } from './track/track.module';
 import { TrackService } from './track/track.service';
-import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
-import { UserService } from './user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
@@ -39,12 +37,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
     }),
   ],
-  controllers: [
-    TrackController,
-    ArtistController,
-    AlbumController,
-    FavoritesController,
-  ],
-  providers: [TrackService, ArtistService, AlbumService, FavoritesService],
+  controllers: [TrackController, ArtistController, FavoritesController],
+  providers: [TrackService, ArtistService, FavoritesService],
 })
 export class AppModule {}

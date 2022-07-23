@@ -13,7 +13,7 @@ import {
 import { isValidId } from 'src/until/until';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
-import { User } from './user.interface';
+import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -22,19 +22,19 @@ export class UserController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllUsers(): User[] {
+  getAllUsers() {
     return this.userService.getAllUsers();
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public create(@Body() createdUser: CreateUserDto): User {
+  public create(@Body() createdUser: CreateUserDto) {
     return this.userService.create(createdUser);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getUserById(@Param('id') id: string): User {
+  getUserById(@Param('id') id: string) {
     if (isValidId(id)) {
       const user = this.userService.getUserById(id);
       if (!user) {
@@ -70,7 +70,7 @@ export class UserController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateUser(@Param('id') id: string, @Body() data: UpdatePasswordDto): User {
+  updateUser(@Param('id') id: string, @Body() data: UpdatePasswordDto) {
     if (isValidId(id)) {
       if (Object.keys(data).length == 0) {
         throw new HttpException('Invalid request.', HttpStatus.BAD_REQUEST);
@@ -82,11 +82,7 @@ export class UserController {
           HttpStatus.NOT_FOUND,
         );
       } else {
-        if (data.oldPassword !== user.password) {
-          throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-        } else {
-          return this.userService.updateUser(id, data);
-        }
+        return this.userService.updateUser(id, data);
       }
     } else {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);

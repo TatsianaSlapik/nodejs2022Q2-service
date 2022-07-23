@@ -8,7 +8,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { Album } from 'src/album/album.interface';
+import { Album } from 'src/album/album.entity';
 import { Artist } from 'src/artist/artist.interface';
 import { Track } from 'src/track/track.interface';
 import { isValidId } from 'src/until/until';
