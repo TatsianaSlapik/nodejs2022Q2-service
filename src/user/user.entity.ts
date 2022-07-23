@@ -25,9 +25,4 @@ export class UserEntity {
   @Column()
   @Exclude({ toPlainOnly: true })
   password: string;
-
-  // toResponse() {
-  //   const { id, login, version, createdAt, updatedAt } = this;
-  //   return { id, login, version, createdAt, updatedAt };
-  // }
 }

@@ -1,6 +1,6 @@
-import { Album } from 'src/album/album.entity';
-import { Artist } from 'src/artist/artist.interface';
-import { Track } from 'src/track/track.interface';
+import { AlbumEntity } from 'src/album/album.entity';
+import { ArtistEntity } from 'src/artist/artist.entity';
+import { TrackEntity } from 'src/track/track.entity';
 import { UserEntity } from 'src/user/user.entity';
 import { Favorites } from 'src/favorites/favorites.interface';
 
@@ -14,8 +14,8 @@ export class Db {
   }
 
   users: UserEntity[];
-  artists: Artist[];
-  tracks: Track[];
-  albums: Album[];
+  artists: ArtistEntity[];
+  tracks: TrackEntity[];
+  albums: AlbumEntity[];
   favorites: Favorites;
 }

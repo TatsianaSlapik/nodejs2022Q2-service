@@ -8,9 +8,9 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { Album } from 'src/album/album.entity';
-import { Artist } from 'src/artist/artist.interface';
-import { Track } from 'src/track/track.interface';
+import { AlbumEntity } from 'src/album/album.entity';
+import { ArtistEntity } from 'src/artist/artist.entity';
+import { TrackEntity } from 'src/track/track.entity';
 import { isValidId } from 'src/until/until';
 import { Favorites } from './favorites.interface';
 import { FavoritesService } from './favorites.service';
@@ -27,7 +27,7 @@ export class FavoritesController {
 
   @Post('/track/:id')
   @HttpCode(HttpStatus.CREATED)
-  public addTrack(@Param('id') id: string): Track {
+  public addTrack(@Param('id') id: string): TrackEntity {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
@@ -60,7 +60,7 @@ export class FavoritesController {
 
   @Post('/album/:id')
   @HttpCode(HttpStatus.CREATED)
-  public addAlbum(@Param('id') id: string): Album {
+  public addAlbum(@Param('id') id: string): AlbumEntity {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
@@ -91,7 +91,7 @@ export class FavoritesController {
 
   @Post('/artist/:id')
   @HttpCode(HttpStatus.CREATED)
-  public addArtist(@Param('id') id: string): Artist {
+  public addArtist(@Param('id') id: string): ArtistEntity {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }

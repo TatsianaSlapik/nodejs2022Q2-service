@@ -1,6 +1,6 @@
-import { Album } from 'src/album/album.entity';
-import { Artist } from 'src/artist/artist.interface';
-import { Track } from 'src/track/track.interface';
+import { AlbumEntity } from 'src/album/album.entity';
+import { ArtistEntity } from 'src/artist/artist.entity';
+import { TrackEntity } from 'src/track/track.entity';
 
 export class Favorites {
   constructor() {
@@ -9,7 +9,7 @@ export class Favorites {
     this.tracks = [];
   }
 
-  artists: Artist[]; // favorite artists ids
-  albums: Album[]; // favorite albums ids
-  tracks: Track[]; // favorite tracks ids
+  artists: ArtistEntity[]; // favorite artists ids
+  albums: AlbumEntity[]; // favorite albums ids
+  tracks: TrackEntity[]; // favorite tracks ids
 }

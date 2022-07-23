@@ -13,7 +13,6 @@ import {
 import { isValidId } from 'src/until/until';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { Album } from './album.entity';
 import { AlbumService } from './album.service';
 
 @Controller('album')
@@ -22,21 +21,21 @@ export class AlbumController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllAlbums() {
-    return this.albumService.getAllAlbums();
+  async getAllAlbums() {
+    return await this.albumService.getAllAlbums();
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public create(@Body() createdAlbum: CreateAlbumDto) {
-    return this.albumService.create(createdAlbum);
+  async create(@Body() createdAlbum: CreateAlbumDto) {
+    return await this.albumService.create(createdAlbum);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getAlbumById(@Param('id') id: string) {
+  async getAlbumById(@Param('id') id: string) {
     if (isValidId(id)) {
-      const album = this.albumService.getAlbumById(id);
+      const album = await this.albumService.getAlbumById(id);
       if (!album) {
         throw new HttpException(
           'Sorry, but this album has not been found.',
@@ -52,16 +51,16 @@ export class AlbumController {
 
   @Delete(':id')
   @HttpCode(204)
-  delete(@Param('id') id: string): void {
+  async delete(@Param('id') id: string) {
     if (isValidId(id)) {
-      const album = this.albumService.getAlbumById(id);
+      const album = await this.albumService.getAlbumById(id);
       if (!album) {
         throw new HttpException(
           'Sorry, but this album has not been found.',
           HttpStatus.NOT_FOUND,
         );
       } else {
-        this.albumService.deleteAlbum(id);
+        await this.albumService.deleteAlbum(id);
       }
     } else {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
@@ -70,19 +69,19 @@ export class AlbumController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateAlbum(@Param('id') id: string, @Body() data: UpdateAlbumDto) {
+  async updateAlbum(@Param('id') id: string, @Body() data: UpdateAlbumDto) {
     if (isValidId(id)) {
       if (Object.keys(data).length == 0) {
         throw new HttpException('Invalid request.', HttpStatus.BAD_REQUEST);
       }
-      const album = this.albumService.getAlbumById(id);
+      const album = await this.albumService.getAlbumById(id);
       if (!album) {
         throw new HttpException(
           'Sorry, but this album has not been found.',
           HttpStatus.NOT_FOUND,
         );
       } else {
-        return this.albumService.updateAlbum(id, data);
+        return await this.albumService.updateAlbum(id, data);
       }
     } else {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);

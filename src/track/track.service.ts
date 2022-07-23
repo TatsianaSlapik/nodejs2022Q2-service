@@ -1,53 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { v4 as uuid } from 'uuid';
-import { Track } from './track.interface';
+import { TrackEntity } from './track.entity';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import db from 'src/db/database';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TrackService {
-  private readonly tracks: Track[] = [];
+  constructor(
+    @InjectRepository(TrackEntity)
+    private tracksRepository: Repository<TrackEntity>,
+  ) {}
 
-  create(track: CreateTrackDto): Track {
-    const newTrack = new Track({
+  async create(track: CreateTrackDto) {
+    const newTrack = this.tracksRepository.create({
       ...track,
       id: uuid(),
     });
-    db.tracks.push(newTrack);
-    return newTrack;
+    return await this.tracksRepository.save(newTrack);
   }
 
-  getAllTracks(): Track[] {
-    return db.tracks;
+  async getAllTracks() {
+    return await this.tracksRepository.find();
   }
 
-  getTrackById(trackId: string): Track {
-    return db.tracks.filter((track) => track.id === trackId)[0];
+  async getTrackById(trackId: string) {
+    return await this.tracksRepository.findOne({ where: { id: trackId } });
   }
 
-  deleteTrack = (trackId: string) => {
-    const indexDb = db.tracks.findIndex((track) => track.id === trackId);
-    const favoriteTrackIndexDb = db.favorites.tracks.findIndex(
+  async deleteTrack(trackId: string) {
+    /* const favoriteTrackIndexDb = db.favorites.tracks.findIndex(
       (track) => track.id === trackId,
     );
-    db.favorites.tracks.splice(favoriteTrackIndexDb, 1);
-    return db.tracks.splice(indexDb, 1);
-  };
+    db.favorites.tracks.splice(favoriteTrackIndexDb, 1);*/
+    return await this.tracksRepository.delete(trackId);
+  }
 
-  updateTrack = (trackId: string, data: UpdateTrackDto): Track => {
-    const trackInDb: Track = db.tracks.find((track) => track.id === trackId);
-    const indexDb = db.tracks.findIndex(
-      (trackInDb) => trackInDb.id === trackId,
-    );
-
-    db.tracks[indexDb] = new Track({
-      ...trackInDb,
+  async updateTrack(trackId: string, data: UpdateTrackDto) {
+    const trackUpdate = await this.tracksRepository.findOne({
+      where: { id: trackId },
+    });
+    const track = await this.tracksRepository.save({
+      ...trackUpdate,
       albumId: data.albumId,
       artistId: data.artistId,
       duration: data.duration,
       name: data.name,
     });
-    return db.tracks[indexDb];
-  };
+    return track;
+  }
 }

@@ -1,34 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { v4 as uuid } from 'uuid';
-import { Artist } from './artist.interface';
+import { ArtistEntity } from './artist.entity';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import db from 'src/db/database';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ArtistService {
-  private readonly artists: Artist[] = [];
+  constructor(
+    @InjectRepository(ArtistEntity)
+    private artistsRepository: Repository<ArtistEntity>,
+  ) {}
 
-  create(artist: CreateArtistDto): Artist {
-    const newArtist = new Artist({
+  async create(artist: CreateArtistDto) {
+    const newArtist = this.artistsRepository.create({
       ...artist,
       id: uuid(),
     });
-    db.artists.push(newArtist);
-    return newArtist;
+    return await this.artistsRepository.save(newArtist);
   }
 
-  getAllArtists(): Artist[] {
-    return db.artists;
+  async getAllArtists() {
+    return await this.artistsRepository.find();
   }
 
-  getArtistById(artistId: string): Artist {
-    return db.artists.filter((artist) => artist.id === artistId)[0];
+  async getArtistById(artistId: string) {
+    return await this.artistsRepository.findOne({ where: { id: artistId } });
   }
 
-  deleteArtist = (artistId: string) => {
-    const indexDb = db.artists.findIndex((artist) => artist.id === artistId);
-    db.tracks.forEach((track) => {
+  async deleteArtist(artistId: string) {
+    /*db.tracks.forEach((track) => {
       if (track.artistId === artistId) {
         track.artistId = null;
       }
@@ -41,23 +44,20 @@ export class ArtistService {
     const favoriteArtistIndexDb = db.favorites.artists.findIndex(
       (artist) => artist.id === artistId,
     );
-    db.favorites.artists.splice(favoriteArtistIndexDb, 1);
-    return db.artists.splice(indexDb, 1);
-  };
+    db.favorites.artists.splice(favoriteArtistIndexDb, 1);*/
+    return await this.artistsRepository.delete(artistId);
+  }
 
-  updateArtist = (artistId: string, data: UpdateArtistDto): Artist => {
-    const artistInDb: Artist = db.artists.find(
-      (artist) => artist.id === artistId,
-    );
-    const indexDb = db.artists.findIndex(
-      (artistInDb) => artistInDb.id === artistId,
-    );
+  async updateArtist(artistId: string, data: UpdateArtistDto) {
+    const artistUpdate = await this.artistsRepository.findOne({
+      where: { id: artistId },
+    });
 
-    db.artists[indexDb] = new Artist({
-      ...artistInDb,
+    const artist = await this.artistsRepository.save({
+      ...artistUpdate,
       name: data.name,
       grammy: data.grammy,
     });
-    return db.artists[indexDb];
-  };
+    return artist;
+  }
 }

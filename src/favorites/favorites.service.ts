@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Favorites } from './favorites.interface';
 import db from 'src/db/database';
-import { Artist } from 'src/artist/artist.interface';
-import { Album } from 'src/album/album.entity';
-import { Track } from 'src/track/track.interface';
+import { ArtistEntity } from 'src/artist/artist.entity';
+import { AlbumEntity } from 'src/album/album.entity';
+import { TrackEntity } from 'src/track/track.entity';
 
 @Injectable()
 export class FavoritesService {
@@ -13,7 +13,7 @@ export class FavoritesService {
     return db.favorites;
   }
 
-  addTrack(trackId: string): Track {
+  addTrack(trackId: string): TrackEntity {
     const trackIndex = db.tracks.findIndex((track) => track.id === trackId);
 
     if (trackIndex == -1) {
@@ -38,7 +38,7 @@ export class FavoritesService {
     return db.favorites;
   };
 
-  addAlbum(albumId: string): Album {
+  addAlbum(albumId: string): AlbumEntity {
     const albumIndex = db.albums.findIndex((album) => album.id === albumId);
     if (albumIndex == -1) {
       return null;
@@ -60,7 +60,7 @@ export class FavoritesService {
     return db.favorites;
   };
 
-  addArtist(artistId: string): Artist {
+  addArtist(artistId: string): ArtistEntity {
     const artistIndex = db.artists.findIndex(
       (artist) => artist.id === artistId,
     );

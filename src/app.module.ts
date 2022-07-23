@@ -37,7 +37,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       }),
     }),
   ],
-  controllers: [TrackController, ArtistController, FavoritesController],
-  providers: [TrackService, ArtistService, FavoritesService],
+  controllers: [FavoritesController],
+  providers: [FavoritesService],
 })
 export class AppModule {}

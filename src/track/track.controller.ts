@@ -13,7 +13,7 @@ import {
 import { isValidId } from 'src/until/until';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { Track } from './track.interface';
+import { TrackEntity } from './track.entity';
 import { TrackService } from './track.service';
 
 @Controller('track')
@@ -22,21 +22,21 @@ export class TrackController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllTracks(): Track[] {
-    return this.trackService.getAllTracks();
+  async getAllTracks() {
+    return await this.trackService.getAllTracks();
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public create(@Body() createdTrack: CreateTrackDto): Track {
-    return this.trackService.create(createdTrack);
+  async create(@Body() createdTrack: CreateTrackDto) {
+    return await this.trackService.create(createdTrack);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getTrackById(@Param('id') id: string): Track {
+  async getTrackById(@Param('id') id: string) {
     if (isValidId(id)) {
-      const track = this.trackService.getTrackById(id);
+      const track = await this.trackService.getTrackById(id);
       if (!track) {
         throw new HttpException(
           'Sorry, but this track has not been found.',
@@ -52,16 +52,16 @@ export class TrackController {
 
   @Delete(':id')
   @HttpCode(204)
-  delete(@Param('id') id: string): void {
+  async delete(@Param('id') id: string) {
     if (isValidId(id)) {
-      const track = this.trackService.getTrackById(id);
+      const track = await this.trackService.getTrackById(id);
       if (!track) {
         throw new HttpException(
           'Sorry, but this track has not been found.',
           HttpStatus.NOT_FOUND,
         );
       } else {
-        this.trackService.deleteTrack(id);
+        await this.trackService.deleteTrack(id);
       }
     } else {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
@@ -70,19 +70,19 @@ export class TrackController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateTrack(@Param('id') id: string, @Body() data: UpdateTrackDto): Track {
+  async updateTrack(@Param('id') id: string, @Body() data: UpdateTrackDto) {
     if (isValidId(id)) {
       if (Object.keys(data).length == 0) {
         throw new HttpException('Invalid request.', HttpStatus.BAD_REQUEST);
       }
-      const track = this.trackService.getTrackById(id);
+      const track = await this.trackService.getTrackById(id);
       if (!track) {
         throw new HttpException(
           'Sorry, but this track has not been found.',
           HttpStatus.NOT_FOUND,
         );
       } else {
-        return this.trackService.updateTrack(id, data);
+        return await this.trackService.updateTrack(id, data);
       }
     } else {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
