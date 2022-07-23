@@ -22,21 +22,21 @@ export class UserController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAllUsers() {
-    return this.userService.getAllUsers();
+  async getAllUsers() {
+    return await this.userService.getAllUsers();
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  public create(@Body() createdUser: CreateUserDto) {
-    return this.userService.create(createdUser);
+  public async create(@Body() createdUser: CreateUserDto) {
+    return await this.userService.create(createdUser);
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getUserById(@Param('id') id: string) {
+  async getUserById(@Param('id') id: string) {
     if (isValidId(id)) {
-      const user = this.userService.getUserById(id);
+      const user = await this.userService.getUserById(id);
       if (!user) {
         throw new HttpException(
           'Sorry, but this user has not been found.',
@@ -52,9 +52,9 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  delete(@Param('id') id: string): void {
+  async delete(@Param('id') id: string): Promise<void> {
     if (isValidId(id)) {
-      const user = this.userService.getUserById(id);
+      const user = await this.userService.getUserById(id);
       if (!user) {
         throw new HttpException(
           'Sorry, but this user has not been found.',
@@ -70,19 +70,19 @@ export class UserController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  updateUser(@Param('id') id: string, @Body() data: UpdatePasswordDto) {
+  async updateUser(@Param('id') id: string, @Body() data: UpdatePasswordDto) {
     if (isValidId(id)) {
       if (Object.keys(data).length == 0) {
         throw new HttpException('Invalid request.', HttpStatus.BAD_REQUEST);
       }
-      const user = this.userService.getUserById(id);
+      const user = await this.userService.getUserById(id);
       if (!user) {
         throw new HttpException(
           'Sorry, but this user has not been found.',
           HttpStatus.NOT_FOUND,
         );
       } else {
-        return this.userService.updateUser(id, data);
+        return await this.userService.updateUser(id, data);
       }
     } else {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);

@@ -24,29 +24,24 @@ export class UserService {
       ...user,
       id: uuid(),
       version: 1,
-      createdAt: Date.now().toString(),
-      updatedAt: Date.now().toString(),
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     });
 
-    return (await this.userRepository.save(newUser)).toResponse();
+    return await this.userRepository.save(newUser);
   }
 
   async getAllUsers() {
     const users = this.userRepository.find();
-    return (await users).map((user) => user.toResponse());
+    return (await users).map((user) => user);
   }
 
   async getUserById(userId: string) {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (user) return user.toResponse();
-    throw new NotFoundException('User was not found');
+    return await this.userRepository.findOne({ where: { id: userId } });
   }
 
   async deleteUser(userId: string) {
-    const result = await this.userRepository.delete(userId);
-    if (result.affected === 0) {
-      throw new NotFoundException('User was not found');
-    }
+    return await this.userRepository.delete(userId);
   }
 
   async updateUser(userId: string, data: UpdatePasswordDto) {
@@ -58,14 +53,20 @@ export class UserService {
       if (data.oldPassword !== userUpdate.password) {
         throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
       } else {
-        return await this.userRepository.save({
+        const user = await this.userRepository.save({
           ...userUpdate,
           password: data.newPassword,
           version: userUpdate.version + 1,
-          updatedAt: Date.now().toString(),
+          updatedAt: Date.now(),
+        });
+        return new UserEntity({
+          id: user.id,
+          login: user.login,
+          version: user.version,
+          createdAt: parseInt(user.createdAt.toString(), 10),
+          updatedAt: user.updatedAt,
         });
       }
     }
-    throw new NotFoundException('User was not found');
   }
 }
