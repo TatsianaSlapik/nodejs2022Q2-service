@@ -13,9 +13,9 @@ services:
     ports:
       - ${POSTGRES_PORT}:5432
 
-#  app:
- #   build:
-  #    context: ./
-   #   dockerfile: ./docker/app/Dockerfile
-    #ports:
-     # - 4000:4000
+  app:
+   build:
+     context: ./
+     dockerfile: ./docker/app/Dockerfile
+   ports:
+      - 4000:4000
