@@ -8,11 +8,7 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { AlbumEntity } from 'src/album/album.entity';
-import { ArtistEntity } from 'src/artist/artist.entity';
-import { TrackEntity } from 'src/track/track.entity';
 import { isValidId } from 'src/until/until';
-import { Favorites } from './favorites.interface';
 import { FavoritesService } from './favorites.service';
 
 @Controller('favs')
@@ -21,17 +17,17 @@ export class FavoritesController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAll(): Favorites {
-    return this.favoritesService.getAllFavorites();
+  async getAll() {
+    return await this.favoritesService.getAllFavorites();
   }
 
   @Post('/track/:id')
   @HttpCode(HttpStatus.CREATED)
-  public addTrack(@Param('id') id: string): TrackEntity {
+  async addTrack(@Param('id') id: string) {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.addTrack(id);
+    const result = await this.favoritesService.addTrack(id);
 
     if (result == null) {
       throw new HttpException(
@@ -45,11 +41,11 @@ export class FavoritesController {
 
   @Delete('/track/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public deleteTrack(@Param('id') id: string): Favorites {
+  async deleteTrack(@Param('id') id: string) {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.deleteTrack(id);
+    const result = await this.favoritesService.deleteTrack(id);
 
     if (result == null) {
       throw new HttpException('Does not exist.', HttpStatus.NO_CONTENT);
@@ -60,12 +56,12 @@ export class FavoritesController {
 
   @Post('/album/:id')
   @HttpCode(HttpStatus.CREATED)
-  public addAlbum(@Param('id') id: string): AlbumEntity {
+  async addAlbum(@Param('id') id: string) {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
 
-    const result = this.favoritesService.addAlbum(id);
+    const result = await this.favoritesService.addAlbum(id);
 
     if (result == null) {
       throw new HttpException(
@@ -79,8 +75,8 @@ export class FavoritesController {
 
   @Delete('/album/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public deleteAlbum(@Param('id') id: string): Favorites {
-    const result = this.favoritesService.deleteAlbum(id);
+  async deleteAlbum(@Param('id') id: string) {
+    const result = await this.favoritesService.deleteAlbum(id);
 
     if (result == null) {
       throw new HttpException('Does not exist.', HttpStatus.NO_CONTENT);
@@ -91,12 +87,12 @@ export class FavoritesController {
 
   @Post('/artist/:id')
   @HttpCode(HttpStatus.CREATED)
-  public addArtist(@Param('id') id: string): ArtistEntity {
+  async addArtist(@Param('id') id: string) {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
 
-    const result = this.favoritesService.addArtist(id);
+    const result = await this.favoritesService.addArtist(id);
 
     if (result == null) {
       throw new HttpException(
@@ -110,11 +106,11 @@ export class FavoritesController {
 
   @Delete('/artist/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public deleteArtist(@Param('id') id: string): Favorites {
+  async deleteArtist(@Param('id') id: string) {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
-    const result = this.favoritesService.deleteArtist(id);
+    const result = await this.favoritesService.deleteArtist(id);
 
     if (result == null) {
       throw new HttpException('Does not exist.', HttpStatus.NO_CONTENT);
