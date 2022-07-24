@@ -13,7 +13,6 @@ import {
 import { isValidId } from 'src/until/until';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
-import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')

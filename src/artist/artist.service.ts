@@ -3,7 +3,6 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { v4 as uuid } from 'uuid';
 import { ArtistEntity } from './artist.entity';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import db from 'src/db/database';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -31,20 +30,6 @@ export class ArtistService {
   }
 
   async deleteArtist(artistId: string) {
-    /*db.tracks.forEach((track) => {
-      if (track.artistId === artistId) {
-        track.artistId = null;
-      }
-    });
-    db.albums.forEach((album) => {
-      if (album.artistId === artistId) {
-        album.artistId = null;
-      }
-    });
-    const favoriteArtistIndexDb = db.favorites.artists.findIndex(
-      (artist) => artist.id === artistId,
-    );
-    db.favorites.artists.splice(favoriteArtistIndexDb, 1);*/
     return await this.artistsRepository.delete(artistId);
   }
 

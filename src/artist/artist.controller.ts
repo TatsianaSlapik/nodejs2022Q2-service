@@ -13,7 +13,6 @@ import {
 import { isValidId } from 'src/until/until';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { ArtistEntity } from './artist.entity';
 import { ArtistService } from './artist.service';
 
 @Controller('artist')

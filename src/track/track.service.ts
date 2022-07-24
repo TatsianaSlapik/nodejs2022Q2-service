@@ -3,7 +3,6 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { v4 as uuid } from 'uuid';
 import { TrackEntity } from './track.entity';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import db from 'src/db/database';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -31,10 +30,6 @@ export class TrackService {
   }
 
   async deleteTrack(trackId: string) {
-    /* const favoriteTrackIndexDb = db.favorites.tracks.findIndex(
-      (track) => track.id === trackId,
-    );
-    db.favorites.tracks.splice(favoriteTrackIndexDb, 1);*/
     return await this.tracksRepository.delete(trackId);
   }
 

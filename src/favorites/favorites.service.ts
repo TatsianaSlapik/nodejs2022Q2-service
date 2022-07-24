@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { FavoritesEntity } from './favorites.entity';
-import db from 'src/db/database';
 import { ArtistEntity } from 'src/artist/artist.entity';
 import { AlbumEntity } from 'src/album/album.entity';
 import { TrackEntity } from 'src/track/track.entity';

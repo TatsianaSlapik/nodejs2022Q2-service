@@ -13,7 +13,6 @@ import {
 import { isValidId } from 'src/until/until';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackEntity } from './track.entity';
 import { TrackService } from './track.service';
 
 @Controller('track')

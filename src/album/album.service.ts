@@ -36,28 +36,12 @@ export class AlbumService {
 
   async deleteAlbum(albumId: string) {
     return await this.albumsRepository.delete(albumId);
-    /* db.tracks.forEach((track) => {
-      if (track.albumId === albumId) {
-        track.albumId = null;
-      }
-    });
-    const favoriteAlbumIndexDb = db.favorites.albums.findIndex(
-      (album) => album.id === albumId,
-    );
-    db.favorites.albums.splice(favoriteAlbumIndexDb, 1);*/
   }
 
   async updateAlbum(albumId: string, data: UpdateAlbumDto) {
     const albumUpdate = await this.albumsRepository.findOne({
       where: { id: albumId },
     });
-    /* const artistInDb: AlbumEntity = db.albums.find(
-      (album) => album.id === albumId,
-    );
-    const indexDb = db.albums.findIndex(
-      (artistInDb) => artistInDb.id === albumId,
-    );*/
-
     const album = await this.albumsRepository.save({
       ...albumUpdate,
       name: data.name,
