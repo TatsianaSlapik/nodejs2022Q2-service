@@ -1,11 +1,10 @@
 import { AlbumEntity } from 'src/album/album.entity';
-import { FavoritesEntity } from 'src/favorites/favorites.entity';
+import { FavoritesArtistEntity } from 'src/favorites/favorites.artist.entity';
 import { TrackEntity } from 'src/track/track.entity';
 import {
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -28,12 +27,11 @@ export class ArtistEntity {
   })
   albums: AlbumEntity[];
 
-  @ManyToMany(() => FavoritesEntity, (favorites) => favorites.artists, {
+  @OneToMany(() => FavoritesArtistEntity, (favorites) => favorites.artist, {
     onDelete: 'SET NULL',
     nullable: true,
   })
-  @JoinTable()
-  favorites: FavoritesEntity[];
+  favorites: FavoritesArtistEntity[];
 
   @PrimaryGeneratedColumn('uuid')
   id: string; // uuid v4

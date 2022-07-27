@@ -8,12 +8,20 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
+import { AlbumService } from 'src/album/album.service';
+import { ArtistService } from 'src/artist/artist.service';
+import { TrackService } from 'src/track/track.service';
 import { isValidId } from 'src/until/until';
 import { FavoritesService } from './favorites.service';
 
 @Controller('favs')
 export class FavoritesController {
-  constructor(private favoritesService: FavoritesService) {}
+  constructor(
+    private favoritesService: FavoritesService,
+    private albumService: AlbumService,
+    private artistService: ArtistService,
+    private trackService: TrackService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -27,7 +35,7 @@ export class FavoritesController {
     if (!isValidId(id)) {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
-    const result = await this.favoritesService.addTrack(id);
+    const result = await this.trackService.getTrackById(id);
 
     if (result == null) {
       throw new HttpException(
@@ -36,7 +44,7 @@ export class FavoritesController {
       );
     }
 
-    return result;
+    return await this.favoritesService.addTrack(id);
   }
 
   @Delete('/track/:id')
@@ -61,7 +69,7 @@ export class FavoritesController {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
 
-    const result = await this.favoritesService.addAlbum(id);
+    const result = await this.albumService.getAlbumById(id);
 
     if (result == null) {
       throw new HttpException(
@@ -70,7 +78,7 @@ export class FavoritesController {
       );
     }
 
-    return result;
+    return await this.favoritesService.addAlbum(id);
   }
 
   @Delete('/album/:id')
@@ -92,7 +100,7 @@ export class FavoritesController {
       throw new HttpException('Invalid id.', HttpStatus.BAD_REQUEST);
     }
 
-    const result = await this.favoritesService.addArtist(id);
+    const result = await this.artistService.getArtistById(id);
 
     if (result == null) {
       throw new HttpException(
@@ -101,7 +109,7 @@ export class FavoritesController {
       );
     }
 
-    return result;
+    return await this.favoritesService.addArtist(id);
   }
 
   @Delete('/artist/:id')

@@ -1,5 +1,5 @@
 import { ArtistEntity } from 'src/artist/artist.entity';
-import { FavoritesEntity } from 'src/favorites/favorites.entity';
+import { FavoritesAlbumEntity } from 'src/favorites/favorites.album.entity';
 import { TrackEntity } from 'src/track/track.entity';
 import {
   Column,
@@ -8,6 +8,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 @Entity('album')
@@ -40,10 +41,9 @@ export class AlbumEntity {
   })
   tracks: TrackEntity[]; // refers to Track
 
-  @ManyToMany(() => FavoritesEntity, (favorites) => favorites.albums, {
+  @OneToMany(() => FavoritesAlbumEntity, (favorites) => favorites.album, {
     onDelete: 'SET NULL',
     nullable: true,
   })
-  @JoinTable()
-  favorites: FavoritesEntity[];
+  favorites: FavoritesAlbumEntity[];
 }
