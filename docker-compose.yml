@@ -20,5 +20,7 @@ services:
    environment:
     POSTGRES_PORT: "5432"
     POSTGRES_HOST: "db"
+   volumes:
+      - ./src:/app/src
    ports:
       - 4000:4000
