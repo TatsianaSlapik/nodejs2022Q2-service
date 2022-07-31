@@ -1,5 +1,9 @@
 # Home Library Service
 
+Для запуска выполните коману "docker compose up -d"
+
+Для проверки уязвимостей "npm run scan"
+
 ## Prerequisites
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
