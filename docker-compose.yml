@@ -14,11 +14,13 @@ services:
       - ${POSTGRES_PORT}:5432
 
   app:
-   build:
-     context: ./
-     dockerfile: ./docker/app/Dockerfile
-   environment:
-    POSTGRES_PORT: "5432"
-    POSTGRES_HOST: "db"
-   ports:
-      - 4000:4000
+    build:
+      context: ./
+      dockerfile: ./docker/app/Dockerfile
+    environment:
+     POSTGRES_PORT: "5432"
+     POSTGRES_HOST: "db"
+    volumes:
+      - ./src:/app/src
+    ports:
+       - 4000:4000

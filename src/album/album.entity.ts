@@ -4,11 +4,8 @@ import { TrackEntity } from 'src/track/track.entity';
 import {
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 @Entity('album')
