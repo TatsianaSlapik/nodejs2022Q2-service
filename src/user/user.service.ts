@@ -34,6 +34,10 @@ export class UserService {
     return await this.userRepository.findOne({ where: { id: userId } });
   }
 
+  async getUserByLogin(login: string) {
+    return await this.userRepository.findOne({ where: { login: login } });
+  }
+
   async deleteUser(userId: string) {
     return await this.userRepository.delete(userId);
   }
