@@ -9,7 +9,10 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { isValidId } from 'src/until/until';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
@@ -19,12 +22,14 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   @HttpCode(HttpStatus.OK)
   async getAllUsers() {
     return await this.userService.getAllUsers();
   }
 
+  @ApiBearerAuth()
   @Post()
   @HttpCode(HttpStatus.CREATED)
   public async create(@Body() createdUser: CreateUserDto) {
