@@ -13,18 +13,23 @@ export class AuthService {
 
   async signup(user: CreateUserDto) {
     const { login, password } = user;
-    const hashPassword = await bcrypt.hash(password, 'salt');
+    let hashPassword = '';
+
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        hashPassword = hash;
+      });
+    });
+
     const newUser = { login, password: hashPassword };
     return this.userService.create(newUser);
   }
 
-  async login(user: CreateUserDto) {
-    const userInDB = await this.userService.getUserByLogin(user.login);
-
-    const { id, login } = userInDB;
-    const token = await this.jwtService.signAsync({ id, login });
-
-    return { accessToken: token };
+  async login(user: any) {
+    const payload = { username: user.login, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload, { secret: 'sdasdf' }),
+    };
   }
 
   async getUserByLogin(login: string) {
@@ -34,4 +39,20 @@ export class AuthService {
    
     return refreshToken;
   }*/
+
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.userService.getUserByLogin(username);
+    let hashPassword = '';
+
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(password, salt, (err, hash) => {
+        hashPassword = hash;
+      });
+    });
+    if (user && user.password === hashPassword) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
+  }
 }
